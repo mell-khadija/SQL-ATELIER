@@ -1,0 +1,133 @@
+﻿à partir du schéma en utilisant les requêtes SQL, vous devez :
+1/ Créer la base donnée sous nom "boutique".
+2/ Création des tables (Manufacturers, Products).
+3/ Insérer dans le tableau Manufacturers les valeurs : 
+(Code, Name)(1,Sony)(2,Creative Labs)(3,Hewlett-Packard)(4,Iomega)(5,Fujitsu)(6,Winchester)
+4/ Insérer dans le tableau Products : 
+(Code,Name,Price,Manufacturer) (1,Hard drive,240,5) (2,Memory,120,6) (3,ZIP drive,150,4) (4,Floppy disk,5,6) (5,Monitor,240,1)
+(6,DVD drive,180,2) VALUES(7,CD drive,90,2) VALUES(8,Printer,270,3) (9,Toner cartridge,66,3) (10,DVD burner,180,2)
+5/ Sélectionnez les noms de tous les produits du magasin.
+6/ Sélectionner les noms et les prix de tous les produits du magasin.
+7/ Sélectionner le nom des produits dont le prix est inférieur ou égal à 200 $.
+8/ Sélectionnez tous les produits dont le prix est compris entre 60 et 120 dollars.
+9/ Sélectionnez le nom et le prix en cents (c'est-à-dire que le prix doit être multiplié par 100).
+10/ Calculer le prix moyen de tous les produits.
+11/ Calculer le prix moyen de tous les produits dont le code fabricant est égal à 2.
+12/ Calculer le nombre de produits dont le prix est supérieur ou égal à 180 dollars.
+13/ Sélectionner le nom et le prix de tous les produits dont le prix est supérieur ou égal à 180 dollars, et trier d'abord par prix (par ordre décroissant), puis par nom (par ordre croissant).
+14/ Sélectionnez toutes les données des produits, y compris toutes les données relatives au fabricant de chaque produit.
+15/ Sélectionnez le nom du produit, le prix et le nom du fabricant de tous les produits.
+16/ Sélectionnez le prix moyen des produits de chaque fabricant, en indiquant uniquement le code du fabricant.
+17/ Sélectionnez le prix moyen des produits de chaque fabricant, en indiquant le nom du fabricant.
+18/ Sélectionnez les noms des fabricants dont les produits ont un prix moyen supérieur ou égal à 150 $.
+19/ Sélectionnez le nom et le prix du produit le moins cher.
+20/ Sélectionnez le nom de chaque fabricant ainsi que le nom et le prix de son produit le plus cher.
+21/ Ajouter un nouveau produit : Loudspeakers, 70 $, manufacter 2 
+22/ Mettre à jour le nom du produit 8 en "laser Print".
+23/ Appliquer une remise de 10 % à tous les produits.
+24/ Appliquer une remise de 10 % à tous les produits dont le prix est supérieur ou égal à 120 $.
+
+
+NB: manufacturer c'est le fabricant
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE Products (
+  Code INTEGER,
+  Name VARCHAR(255) NOT NULL ,
+  Price DECIMAL NOT NULL ,
+  Manufacturer INTEGER NOT NULL,
+  PRIMARY KEY (Code), 
+  FOREIGN KEY (Manufacturer) REFERENCES Manufacturers(Code)
+) ENGINE=INNODB;
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(1,'Hard drive',240,5);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(2,'Memory',120,6);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(3,'ZIP drive',150,4);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(4,'Floppy disk',5,6);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(5,'Monitor',240,1);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(6,'DVD drive',180,2);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(7,'CD drive',90,2);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(8,'Printer',270,3);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(9,'Toner cartridge',66,3);
+INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(10,'DVD burner',180,2);
+
+
+
+CREATE TABLE Manufacturers (
+  Code INTEGER,
+  Name VARCHAR(255) NOT NULL,
+  PRIMARY KEY (Code)   
+);
+
+CREATE TABLE Products (
+  Code INTEGER,
+  Name VARCHAR(255) NOT NULL ,
+  Price DECIMAL NOT NULL ,
+  Manufacturer INTEGER NOT NULL,
+  PRIMARY KEY (Code), 
+  FOREIGN KEY (Manufacturer) REFERENCES Manufacturers(Code)
+) ENGINE=INNODB;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2) use boutique;
+CREATE TABLE Manufacturers (code INT NOT NULL, name VARCHAR(80) NOT NULL, PRIMARY KEY(code));
+CREATE TABLE Product (code INT NOT NULL, name VARCHAR(80) NOT NULL, price REAL NOT NULL, Manufactur INT NOT NULL, PRIMARY KEY (code), FOREIGN KEY(Manufactur) REFERENCES manufacturers(code));
+
+
+3) INSERT INTO manufacturers VALUES (1,"Sony"), (2,"Creative Labs"), (3,"Hewlett-Packard"), (4,"Iomega"), (5,"Fujitsu"), (6,"Winchester")
+
+4) INSERT INTO product (code,name,price,Manufactur) VALUES (1,"Hard drive",240,5), (2,'Memory',120,6), (3,'ZIP drive',150,4), (4,'Floppy disk',5,6), (5,'Monitor',240,1), (6,'DVD drive',180,2),(7,'CD drive',90,2), (8,'Printer',270,3), (9,'Toner cartridge',66,3), (10,'DVD burner',180,2);
+
+5) SELECT name from product;
+
+6) SELECT name, price from product;
+
+7) SELECT name from product WHERE price <= 200;
+8) SELECT * FROM product WHERE price >= 60 and price <=120;
+   SELECT * FROM product WHERE price BETWEEN 60 and 120;
+
+9) SELECT name , (price * 100) cents FROM product;
+
+10) SELECT Avg(price) as average FROM product;
+    SELECT (SUM(price) / COUNT(price)) as average FROM product;
+
+11) SELECT avg(price) as average FROM product WHERE Manufactur = 2;
+
+12) SELECT COUNT(price) as more180 FROM product WHERE price >= 180;
+
+13) SELECT name, price FROM product WHERE price >= 180 ORDER BY price DESC, name ASC;
+
+14) SELECT p.*, m.* FROM product p , manufacturers m WHERE p.Manufactur = m.code;
+
+15) SELECT x.name as pr_name, y.name as man_name, x.price as pro_pri FROM product x , manufacturers y WHERE x.Manufactur = y.code;
+
+16) SELECT AVG(p.price) from product p, manufacturers m WHERE p.Manufactur = m.code GROUP By p.Manufactur;
+
+17) SELECT AVG(p.price) from product p, manufacturers m WHERE p.Manufactur = m.code GROUP By m.name;
+
+18) SELECT AVG(p.price) from product p, manufacturers m WHERE p.Manufactur = m.code GROUP By p.Manufactur HAVING AVG(p.price) >= 150;
+
+19) SELECT p.name, MIN(p.price) from product p;
+
+20)
+
+

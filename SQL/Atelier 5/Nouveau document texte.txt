@@ -1,0 +1,14 @@
+SELECT Name FROM Pieces;
+
+SELECT * FROM Providers;
+
+SELECT Piece, AVG(Price) FROM Provides GROUP BY Piece;
+
+SELECT Providers.Name FROM Providers INNER JOIN Provides
+ON Providers.Code = Provides.Provider AND Provides.Piece = 1;
+
+
+SELECT Pieces.Name
+   FROM Pieces INNER JOIN Provides
+   ON Pieces.Code = Provides.Piece
+     AND Provides.Provider = 'HAL';

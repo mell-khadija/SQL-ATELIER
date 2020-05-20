@@ -1,0 +1,26 @@
+SELECT Warehouse, AVG(Value)
+  FROM Boxes
+  GROUP BY Warehouse;
+
+SELECT Warehouse, AVG(Value)
+  FROM Boxes
+  GROUP BY Warehouse
+  HAVING AVG(Value) > 150;
+
+ SELECT Boxes.Code, Location
+  FROM Warehouses INNER JOIN Boxes 
+    ON Warehouses.Code = Boxes.Warehouse;
+
+SELECT Warehouse, COUNT(*)
+ FROM Boxes
+ GROUP BY Warehouse;
+
+ SELECT Code
+   FROM Warehouses
+   WHERE Capacity <
+   (
+     SELECT COUNT(*)
+     FROM Boxes
+     WHERE Warehouse = Warehouses.Code
+   );
+
